@@ -1,0 +1,20 @@
+#!/bin/bash
+
+WARNING_DAYS=30
+CRITICAL_DAYS=25
+
+UPTIME=$(cat /proc/uptime | awk '{print $1}')
+
+UPTIME_DAYS=$(echo "scale=0; $UPTIME / 86400" | bc)
+
+if [ $UPTIME_DAYS -ge $CRITICAL_DAYS ]; then
+  echo "CRITICAL - System Uptime: $UPTIME_DAYS days"
+  exit 2
+elif [ $UPTIME_DAYS -ge $WARNING_DAYS ]; then
+  echo "WARNING - System Uptime: $UPTIME_DAYS days"
+  exit 1
+else
+  echo "OK - System Uptime: $UPTIME_DAYS days"
+  exit 0
+fi
+ 
